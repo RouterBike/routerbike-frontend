@@ -3,7 +3,7 @@ name: Slack Notification on Push to Staging
 on:
   push:
     branches:
-      - staging
+      - main
 
 jobs:
   send-slack-message:
