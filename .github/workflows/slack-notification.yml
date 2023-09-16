@@ -1,9 +1,10 @@
-name: Slack Notification on Push to Staging
+name: Slack Notification on Push to Staging or Main
 
 on:
   push:
     branches:
       - main
+      - staging
 
 jobs:
   send-slack-message:
@@ -16,6 +17,14 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
-          curl -X POST -H 'Content-type: application/json' --data '{
-            "text": "New pushes to the staging branch!"
-          }' $SLACK_WEBHOOK_URL
+          if [[ "$GITHUB_REF" == "refs/heads/main" ]]; then
+            MESSAGE="New pushes to the main branch!"
+          elif [[ "$GITHUB_REF" == "refs/heads/staging" ]]; then
+            MESSAGE="New pushes to the staging branch!"
+          else
+            MESSAGE="New pushes to an unspecified branch."
+          fi
+
+          curl -X POST -H 'Content-type: application/json' --data "{
+            \"text\": \"$MESSAGE\"
+          }" $SLACK_WEBHOOK_URL
