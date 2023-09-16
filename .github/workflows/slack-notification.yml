@@ -1,0 +1,21 @@
+name: Slack Notification on Push to Staging
+
+on:
+  push:
+    branches:
+      - staging
+
+jobs:
+  send-slack-message:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Send Slack Message
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data '{
+            "text": "New pushes to the staging branch!"
+          }' $SLACK_WEBHOOK_URL
