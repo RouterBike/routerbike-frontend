@@ -18,9 +18,9 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
           if [[ "$GITHUB_REF" == "refs/heads/main" ]]; then
-            MESSAGE="New pushes to the main branch!"
+            MESSAGE="New pushes to the main branch by $GITHUB_ACTOR!"
           elif [[ "$GITHUB_REF" == "refs/heads/staging" ]]; then
-            MESSAGE="New pushes to the staging branch!"
+            MESSAGE="New pushes to the staging branch by $GITHUB_ACTOR!"
           else
             MESSAGE="New pushes to an unspecified branch."
           fi
